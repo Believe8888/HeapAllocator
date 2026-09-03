@@ -9,7 +9,9 @@ A 16-byte aligned custom heap allocator for Windows.
 - Zero dependencies (built on the Windows API's `VirtualAlloc` function)
 
 ## Thread Safety
+
 This allocator is not thread-safe.
+
 Concurrent access to the same allocator instance is not supported.
 
 ## Usage
