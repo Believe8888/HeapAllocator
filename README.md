@@ -11,7 +11,6 @@ A 16-byte aligned custom heap allocator for Windows.
 ## Thread Safety
 
 This allocator is not thread-safe.
-
 Concurrent access to the same allocator instance is not supported.
 
 ## Usage
