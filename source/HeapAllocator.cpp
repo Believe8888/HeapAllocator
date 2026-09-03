@@ -6,6 +6,36 @@ HeapAllocator::HeapAllocator(Heap& heap) noexcept
     : heap(heap)
 {}
 
+void* HeapAllocator::reallocate(void* ptr, size_t size) noexcept
+{
+    if (!ptr)
+        return allocate(size);
+
+    if (size == 0) {
+        free(ptr);
+        return nullptr;
+    }
+
+    const auto block = reinterpret_cast<Heap::BlockHeader *>(uintptr_t(ptr) - sizeof(Heap::BlockHeader));
+    const size_t payload_size = block->block_size - sizeof(Heap::BlockHeader);
+    if (payload_size >= size)
+        return ptr;
+
+    void* new_ptr = allocate(size);
+    if (new_ptr) {
+        // copy values
+        const size_t end = payload_size >> 3;
+        for (size_t i = 0; i < end; ++i) {
+            reinterpret_cast<uint64_t *>(new_ptr)[i] = reinterpret_cast<uint64_t *>(ptr)[i];
+        }
+        free(ptr);
+        return new_ptr;
+    }
+
+    return nullptr;
+}
+
+
 void* HeapAllocator::allocate(size_t size) noexcept
 {
     const size_t block_size = ALIGN_UP(sizeof(Heap::BlockHeader) + size, Heap::alignment);

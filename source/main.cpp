@@ -5,7 +5,7 @@ int main() {
     Heap heap(0x1000);
     HeapAllocator allocator(heap);
 
-    auto* p1 = allocator.allocate<int>();
+    auto* p1 = allocator.allocate<uint64_t>();
     void* p2 = allocator.allocate(32);
 
     allocator.free(p1);

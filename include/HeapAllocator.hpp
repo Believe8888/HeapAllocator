@@ -11,8 +11,9 @@ public:
         return reinterpret_cast<T *>(allocate(sizeof(T)));
     }
 
-    void* allocate(size_t size) noexcept;
-    void  free(void* ptr)       noexcept;
+    void* reallocate(void* ptr, size_t size) noexcept;
+    void* allocate(size_t size)              noexcept;
+    void  free(void* ptr)                    noexcept;
 
     void print_data() const noexcept;
 private:
